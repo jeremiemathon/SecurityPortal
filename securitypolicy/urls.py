@@ -15,13 +15,21 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import SectionListView, SectionDetailView
+from .views import SectionListView, SectionDetailView, RuleDetailView, RuleCreateView, RuleUpdateView, RuleDeleteView, RuleSearch
 from .admin import securitypolicy_admin_site
 
 urlpatterns = [
     path('', SectionListView.as_view(), name='policy-home'),
     path('section/', SectionDetailView.as_view(), name='section-detail'),
     path('section/<int:pk>', SectionDetailView.as_view(), name='section-detail'),
+
+    path('results/', RuleSearch.as_view(), name='rule-search'),
+
+    path('rule/<int:pk>$', RuleDetailView.as_view(), name='rule-detail'),
+    path('rule/new', RuleCreateView.as_view(), name='rule-create'),
+    path('rule/<int:pk>/update/', RuleUpdateView.as_view(), name='rule-update'),
+    path('rule/<int:pk>/delete/', RuleDeleteView.as_view(), name='rule-delete'),
+
     path('admin/', securitypolicy_admin_site.urls),
 ]
 

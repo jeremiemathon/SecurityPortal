@@ -27,7 +27,9 @@ from .views import HomePageView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('sp/', include('securitypolicy.urls')),
+
     path('', HomePageView),
+
     # path('sp/', securitypolicy_views.homepage, name='policy-home')
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

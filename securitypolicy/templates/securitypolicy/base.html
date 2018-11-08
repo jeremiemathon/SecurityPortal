@@ -65,8 +65,8 @@
             <h3>Our Sidebar</h3>
             <p class='text-muted'>You can put any information here you'd like.
               <ul class="list-group">
-                <form method="GET" action="{% url 'policy-home' %}">
-                  <input name="q"value="{{ request.get.q }}" placehorlder="Search...">
+                <form method="GET" action="{% url 'rule-search' %}">
+                  <input name="q" value="{{ request.get.q }}" placeholder="Search...">
                   <button class="btn-success" type="submit">Search</button>
                 </form>
                 <li class="list-group-item list-group-item-light">Latest Posts</li>
