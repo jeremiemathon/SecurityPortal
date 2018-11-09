@@ -7,6 +7,7 @@ class SectionSerializer(serializers.HyperlinkedModelSerializer):
         model = Section
         fields = ('title', 'description')
 
+
 class RuleSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Rule
