@@ -1,0 +1,26 @@
+{% extends 'securitypolicy/base.html' %}
+{% block content %}
+<h1>Policy Home</h1>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+<br>
+<ul>
+  {% for rule in rules %}
+    <article class="media content-section">
+      <img class="rounded-circle article-img" src="{{ rule.author.profile.profile_picture.url }}">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="#">{{ rule.author }}</a>
+          <small class="text-muted">{{ rule.date_posted|date:"d/m/Y" }}</small>
+        </div>
+        <h2><a class="article-title" href="{% url 'rule-detail' rule.pk %}">{{ rule.title }}</a></h2>
+        <p class="article-content">{{ rule.content|safe }}</p>
+      </div>
+    </article>
+  {% endfor %}
+</ul>
+{% endblock content %}
