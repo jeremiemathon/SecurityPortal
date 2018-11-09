@@ -33,6 +33,8 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'adminsortable',
     'ckeditor',
+    'crispy_forms',
+    'rest_framework',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,6 +44,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'securitypolicy.apps.SecuritypolicyConfig',
+    'users.apps.UsersConfig'
 ]
 
 MIDDLEWARE = [

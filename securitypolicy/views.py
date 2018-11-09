@@ -6,6 +6,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 
 from rest_framework import generics
+from rest_framework import viewsets
+from .serializers import SectionSerializer, RuleSerializer
 
 from .models import Rule, Section
 
@@ -25,6 +27,13 @@ class SectionListView(ListView):
     template_name = "securitypolicy/homepage.html"
     context_object_name = 'sections'
 
+class SectionListViewAPI(viewsets.ModelViewSet):
+    queryset = Section.objects.all()
+    serializer_class = SectionSerializer
+
+class RuleListViewAPI(viewsets.ModelViewSet):
+    queryset = Rule.objects.all()
+    serializer_class = RuleSerializer
 
 class SectionDetailView(ListView):
     def get(self, request, pk):

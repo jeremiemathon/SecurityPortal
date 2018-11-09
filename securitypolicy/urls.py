@@ -15,8 +15,17 @@ Including another URLconf
 """
 
 from django.urls import path
-from .views import SectionListView, SectionDetailView, RuleDetailView, RuleCreateView, RuleUpdateView, RuleDeleteView, RuleSearch
+from django.conf.urls import include
+
+from .views import SectionListView, SectionDetailView, RuleDetailView, RuleCreateView, RuleUpdateView, RuleDeleteView, RuleSearch, SectionListViewAPI, RuleListViewAPI
 from .admin import securitypolicy_admin_site
+
+from rest_framework import routers
+
+router = routers.DefaultRouter()
+router.register(r'section', SectionListViewAPI)
+router.register(r'rule', RuleListViewAPI)
+
 
 urlpatterns = [
     path('', SectionListView.as_view(), name='policy-home'),
@@ -29,6 +38,8 @@ urlpatterns = [
     path('rule/new', RuleCreateView.as_view(), name='rule-create'),
     path('rule/<int:pk>/update/', RuleUpdateView.as_view(), name='rule-update'),
     path('rule/<int:pk>/delete/', RuleDeleteView.as_view(), name='rule-delete'),
+
+    path('api/', include(router.urls)),
 
     path('admin/', securitypolicy_admin_site.urls),
 ]
