@@ -27,13 +27,16 @@ class SectionListView(ListView):
     template_name = "securitypolicy/homepage.html"
     context_object_name = 'sections'
 
+
 class SectionListViewAPI(viewsets.ModelViewSet):
     queryset = Section.objects.all()
     serializer_class = SectionSerializer
 
+
 class RuleListViewAPI(viewsets.ModelViewSet):
     queryset = Rule.objects.all()
     serializer_class = RuleSerializer
+
 
 class SectionDetailView(ListView):
     def get(self, request, pk):

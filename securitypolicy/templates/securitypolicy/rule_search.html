@@ -17,7 +17,7 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
           <a class="mr-2" href="#">{{ rule.author }}</a>
           <small class="text-muted">{{ rule.date_posted|date:"d/m/Y" }}</small>
         </div>
-        <h2><a class="article-title" href="{% url 'rule-search' %}">{{ rule.title }}</a></h2>
+        <h2><a class="article-title" href="{% url 'rule-detail' rule.pk %}">{{ rule.title }}</a></h2>
         <p class="article-content">{{ rule.content|safe }}</p>
       </div>
     </article>

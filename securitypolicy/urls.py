@@ -23,8 +23,8 @@ from .admin import securitypolicy_admin_site
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register(r'section', SectionListViewAPI)
-router.register(r'rule', RuleListViewAPI)
+# router.register(r'section', SectionListViewAPI)
+# router.register(r'rule', RuleListViewAPI)
 
 
 urlpatterns = [
