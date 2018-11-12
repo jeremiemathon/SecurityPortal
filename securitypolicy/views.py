@@ -9,7 +9,7 @@ from rest_framework import generics
 from rest_framework import viewsets
 from .serializers import SectionSerializer, RuleSerializer
 
-from .models import Rule, Section
+from .models import Rule, Section, SubSection
 
 
 # @login_required
@@ -41,12 +41,21 @@ class RuleListViewAPI(viewsets.ModelViewSet):
 class SectionDetailView(ListView):
     def get(self, request, pk):
         context = {
-            'title': 'Security Policy',
-            'sections': Section.objects.all(),
-            'rules': Rule.objects.filter(section_id=pk),
+            'title': 'Security Policy - Section Detail',
+            'subsections': SubSection.objects.filter(section_id=pk, )
         }
         return render(request, 'securitypolicy/section_detail.html', context)
 
+
+class SubSectionDetailView(ListView):
+    def get(self, request, pk):
+        context = {
+            'title': 'Security Policy',
+            'sections': Section.objects.all(),
+            'subsections': SubSection.objects.filter(section_id=pk),
+            'rules': Rule.objects.filter(subsection_id=pk)
+        }
+        return render(request, 'securitypolicy/subsection_detail.html', context)
 
 class RuleDetailView(DetailView):
     model = Rule

@@ -17,7 +17,7 @@ Including another URLconf
 from django.urls import path
 from django.conf.urls import include
 
-from .views import SectionListView, SectionDetailView, RuleDetailView, RuleCreateView, RuleUpdateView, RuleDeleteView, RuleSearch, SectionListViewAPI, RuleListViewAPI
+from .views import SectionListView, SectionDetailView, RuleDetailView, RuleCreateView, RuleUpdateView, RuleDeleteView, RuleSearch, SectionListViewAPI, RuleListViewAPI, SubSectionDetailView
 from .admin import securitypolicy_admin_site
 
 from rest_framework import routers
@@ -29,9 +29,9 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     path('', SectionListView.as_view(), name='policy-home'),
-    path('section/', SectionDetailView.as_view(), name='section-detail'),
+    # path('section/', SectionDetailView.as_view(), name='section-detail'),
     path('section/<int:pk>', SectionDetailView.as_view(), name='section-detail'),
-
+    path('subsection/<int:pk>', SubSectionDetailView.as_view(), name='subsection-detail'),
     path('results/', RuleSearch.as_view(), name='rule-search'),
 
     path('rule/<int:pk>$', RuleDetailView.as_view(), name='rule-detail'),
@@ -41,6 +41,6 @@ urlpatterns = [
 
     path('api/', include(router.urls)),
 
-    path('admin/', securitypolicy_admin_site.urls),
+    path('admin/', securitypolicy_admin_site.urls, name='securitypolicy-admin'),
 ]
 

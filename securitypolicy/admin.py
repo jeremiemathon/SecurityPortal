@@ -4,7 +4,7 @@ from ckeditor.widgets import CKEditorWidget
 
 from adminsortable.admin import SortableAdmin
 
-from .models import Rule, Section, Needs
+from .models import Rule, Section, Needs, SubSection
 
 
 class SecurityPolicyAdmin(AdminSite):
@@ -12,7 +12,13 @@ class SecurityPolicyAdmin(AdminSite):
 
 
 class SectionAdmin(SortableAdmin):
-    list_display = ('title','description','section_order',)
+    list_display = ('title', 'description', 'order', )
+    # list_filter = ('title', )
+
+
+class SubSectionAdmin(SortableAdmin):
+    list_display = ('title', 'description', 'order', 'section', )
+    # list_filter = ('title', )
 
 
 class RuleAdminForm(forms.ModelForm):
@@ -24,11 +30,13 @@ class RuleAdminForm(forms.ModelForm):
 
 
 class RuleAdmin(SortableAdmin):
-    list_display = ('title', 'author', 'date_posted','rule_order','section')
+    list_display = ('title', 'author', 'date_posted', 'order', 'subsection')
+
     form = RuleAdminForm
 
 
 securitypolicy_admin_site = SecurityPolicyAdmin(name='securitypolicy-admin')
 securitypolicy_admin_site.register(Section, SectionAdmin)
+securitypolicy_admin_site.register(SubSection, SubSectionAdmin)
 securitypolicy_admin_site.register(Rule, RuleAdmin)
 securitypolicy_admin_site.register(Needs)

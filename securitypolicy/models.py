@@ -14,17 +14,29 @@ from adminsortable.fields import SortableForeignKey
 
 
 class Section(SortableMixin):
-    title = models.CharField(max_length=255, default='Section Title')
-    description = models.TextField(default='')
-    # order = models.IntegerField(default=0)
-    section_order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
-    # rules = models.ForeignKey(to=Rule)
+	title = models.CharField(max_length=255, default='Section Title')
+	description = RichTextField()
+	order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
 
-    def __str__(self):
-        return self.title
+	def __str__(self):
+		return self.title
 
-    class Meta:
-        ordering = ['section_order',]
+	class Meta:
+		ordering = ['order', ]
+
+
+class SubSection(SortableMixin):
+	title = models.CharField(max_length=255, default='Section Title')
+	description = RichTextField()
+	order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
+	section = SortableForeignKey(to=Section, on_delete=models.CASCADE, null=True)
+
+	def __str__(self):
+		return self.title
+
+	class Meta:
+		ordering = ['order', ]
+
 
 class Needs(models.Model):
 	title = models.CharField(max_length=255, default='Security Needs')
@@ -35,26 +47,26 @@ class Needs(models.Model):
 		return self.title
 
 	class Meta:
-		verbose_name="Security Needs - (Confidentiality, Integrity, Availability)"
-		verbose_name_plural="Security Needs - (Confidentiality, Integrity, Availability)"
+		verbose_name = "Security Needs - (Confidentiality, Integrity, Availability)"
+		verbose_name_plural = "Security Needs - (Confidentiality, Integrity, Availability)"
+
 
 class Rule(SortableMixin):
 	title = models.CharField(max_length=255, default='')
-	# section = models.CharField(max_length=255, default='')
-	section = SortableForeignKey(to=Section, on_delete=models.CASCADE, null=True)
-	# content = models.TextField()
+	subsection = SortableForeignKey(to=SubSection, on_delete=models.CASCADE, null=True)
 	content = RichTextField()
 	date_posted = models.DateTimeField(auto_now_add=True)
 	date_modified = models.DateTimeField(auto_now=True)
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
 	mandatory = models.BooleanField(default=True)
-	rule_order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
-	# needs = models.ForeignKey(Needs, on_delete=models.CASCADE)
-
+	order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
 
 	def __str__(self):
 		return self.title
+
 	def get_absolute_url(self):
-		return reverse('rule-detail', kwargs={'pk':self.pk})
+		return reverse('rule-detail', kwargs={'pk': self.pk})
+
 	class Meta:
-		ordering = ['rule_order',]
+		ordering = ['order', ]
+
