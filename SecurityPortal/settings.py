@@ -35,6 +35,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'crispy_forms',
     'rest_framework',
+    'import_export',
+    'django_extensions',
 
     'django.contrib.admin',
     'django.contrib.auth',

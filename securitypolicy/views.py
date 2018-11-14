@@ -9,7 +9,7 @@ from rest_framework import generics
 from rest_framework import viewsets
 from .serializers import SectionSerializer, RuleSerializer
 
-from .models import Rule, Section, SubSection
+from .models import Rule, Section, SubSection, Policy
 
 
 # @login_required
@@ -22,10 +22,19 @@ def homepage(request):
     return render(request, 'securitypolicy/homepage.html', context)
 
 
-class SectionListView(ListView):
-    model = Section
+class PolicyListView(ListView):
+    model = Policy
     template_name = "securitypolicy/homepage.html"
-    context_object_name = 'sections'
+    context_object_name = 'policies'
+
+
+class SectionListView(ListView):
+    def get(self, request, pk):
+        context = {
+            'title': 'Security Policy - Policy Detail',
+            'sections': Section.objects.filter(policy_id=pk, )
+        }
+        return render(request, 'securitypolicy/policy.html', context)
 
 
 class SectionListViewAPI(viewsets.ModelViewSet):
@@ -38,22 +47,25 @@ class RuleListViewAPI(viewsets.ModelViewSet):
     serializer_class = RuleSerializer
 
 
-class SectionDetailView(ListView):
-    def get(self, request, pk):
+class SubSectionListView(ListView):
+    def get(self, request, pk, pks):
         context = {
             'title': 'Security Policy - Section Detail',
-            'subsections': SubSection.objects.filter(section_id=pk, )
+            'rules': Rule.objects.filter(section_id=pks, ),
+            'policy': Policy.objects.filter(id=pk, ),
+            'subsections': SubSection.objects.filter(section_id=pks, )
         }
         return render(request, 'securitypolicy/section_detail.html', context)
 
 
-class SubSectionDetailView(ListView):
-    def get(self, request, pk):
+class RuleListView(ListView):
+    def get(self, request, pk, pks, pkss):
         context = {
             'title': 'Security Policy',
-            'sections': Section.objects.all(),
-            'subsections': SubSection.objects.filter(section_id=pk),
-            'rules': Rule.objects.filter(subsection_id=pk)
+            'policy': Policy.objects.filter(id=pk),
+            'sections': Section.objects.filter(policy_id=pk, id=pks),
+            'subsections': SubSection.objects.filter(section_id=pks),
+            'rules': Rule.objects.filter(subsection_id=pkss)
         }
         return render(request, 'securitypolicy/subsection_detail.html', context)
 

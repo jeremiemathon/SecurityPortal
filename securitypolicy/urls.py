@@ -17,7 +17,20 @@ Including another URLconf
 from django.urls import path
 from django.conf.urls import include
 
-from .views import SectionListView, SectionDetailView, RuleDetailView, RuleCreateView, RuleUpdateView, RuleDeleteView, RuleSearch, SectionListViewAPI, RuleListViewAPI, SubSectionDetailView
+from .views import (
+    SectionListView,
+    SubSectionListView,
+    RuleDetailView,
+    RuleCreateView,
+    RuleUpdateView,
+    RuleDeleteView,
+    RuleSearch,
+    SectionListViewAPI,
+    RuleListViewAPI,
+    RuleListView,
+    PolicyListView,
+)
+
 from .admin import securitypolicy_admin_site
 
 from rest_framework import routers
@@ -28,13 +41,14 @@ router = routers.DefaultRouter()
 
 
 urlpatterns = [
-    path('', SectionListView.as_view(), name='policy-home'),
+    path('', PolicyListView.as_view(), name='policy-home'),
+    path('policy/<int:pk>', SectionListView.as_view(), name='section-list'),
     # path('section/', SectionDetailView.as_view(), name='section-detail'),
-    path('section/<int:pk>', SectionDetailView.as_view(), name='section-detail'),
-    path('subsection/<int:pk>', SubSectionDetailView.as_view(), name='subsection-detail'),
+    path('policy/<int:pk>/section/<int:pks>', SubSectionListView.as_view(), name='subsection-list'),
+    path('policy/<int:pk>/section/<int:pks>/subsection/<int:pkss>', RuleListView.as_view(), name='subsection-detail'),
     path('results/', RuleSearch.as_view(), name='rule-search'),
 
-    path('rule/<int:pk>$', RuleDetailView.as_view(), name='rule-detail'),
+    path('rule/<int:pk>', RuleDetailView.as_view(), name='rule-detail'),
     path('rule/new', RuleCreateView.as_view(), name='rule-create'),
     path('rule/<int:pk>/update/', RuleUpdateView.as_view(), name='rule-update'),
     path('rule/<int:pk>/delete/', RuleDeleteView.as_view(), name='rule-delete'),

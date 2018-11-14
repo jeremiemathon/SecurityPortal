@@ -13,10 +13,25 @@ from adminsortable.fields import SortableForeignKey
 # Create your models here.
 
 
+class Policy(SortableMixin):
+	title = models.CharField(max_length=255, default='Section Title')
+	description = RichTextField()
+	order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
+
+	def __str__(self):
+		return self.title
+
+	class Meta:
+		ordering = ['order', ]
+
+	pass
+
+
 class Section(SortableMixin):
 	title = models.CharField(max_length=255, default='Section Title')
 	description = RichTextField()
 	order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
+	policy = SortableForeignKey(to=Policy, on_delete=models.CASCADE, null=True)
 
 	def __str__(self):
 		return self.title
@@ -53,7 +68,8 @@ class Needs(models.Model):
 
 class Rule(SortableMixin):
 	title = models.CharField(max_length=255, default='')
-	subsection = SortableForeignKey(to=SubSection, on_delete=models.CASCADE, null=True)
+	subsection = models.ForeignKey(to=SubSection, on_delete=models.CASCADE,  blank=True, null=True)
+	section = models.ForeignKey(to=Section, on_delete=models.CASCADE, blank=True, null=True)
 	content = RichTextField()
 	date_posted = models.DateTimeField(auto_now_add=True)
 	date_modified = models.DateTimeField(auto_now=True)

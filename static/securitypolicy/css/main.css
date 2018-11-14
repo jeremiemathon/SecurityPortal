@@ -4,9 +4,17 @@ body {
   margin-top: 5rem;
 }
 
+.section-row:hover {
+    background: #D3D3D3;
+}
+
+.section-row:hover a{
+    color:#FFF;
+}
+
+
 h1, h2, h3, h4, h5, h6 {
   color: #444444;
-  size: 10px
 }
 
 ul {
@@ -51,7 +59,7 @@ ul {
 }
 
 a.article-title:hover {
-  color: #428bca;
+
   text-decoration: none;
 }
 
