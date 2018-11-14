@@ -65,20 +65,21 @@
 <main role="main" class="container-fluid">
     <div class="row">
         <div class="col-md-2">
-            <div class="content-section navbar-dark bg-dark">
+            <div class="content-section navbar-dark bg-dark d-block">
                 <h3 class="text-white center">Sidebar Menu</h3>
                 <form method="GET" action="{% url 'rule-search' %}">
+                    <div class="text-center">
                         <input name="q" value="{{ request.get.q }}" placeholder="Search...">
-                        <button class="btn-success" type="submit">Search</button>
-                    </form>
-                    <br>
-                <ul class="list-group">
-                    <li class="list-group-item list-group-item-dark">Latest Posts</li>
-                    <li class="list-group-item list-group-item-dark">Announcements</li>
-                    <li class="list-group-item list-group-item-dark">Calendars</li>
-                    <li class="list-group-item list-group-item-dark">etc</li>
-                </ul>
-                </p>
+                        <br />
+                        <button class="btn-success btn-sm" type="submit">Search</button>
+                    </div>
+                </form>
+                <br>
+                <div class="button-group-vertical">
+                    <button type="button" class="btn btn-secondary btn-block">Home</button>
+                    <button type="button" class="btn btn-secondary btn-block">Latest Posts</button>
+                    <button type="button" class="btn btn-secondary btn-block">Menu</button>
+                </div>
             </div>
         </div>
         <div class="col-md-10">

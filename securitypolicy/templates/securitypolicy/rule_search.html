@@ -11,14 +11,9 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 <ul>
   {% for rule in rules %}
   <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ rule.author.profile.profile_picture.url }}">
     <div class="media-body">
-      <div class="article-metadata">
-        <a class="mr-2" href="#">{{ rule.author }}</a>
-        <small class="text-muted">{{ rule.date_posted|date:"d/m/Y" }}</small>
-      </div>
-      <h2><a class="article-title" href="{% url 'rule-detail' rule.pk %}">{{ rule.title }}</a></h2>
-      <p class="article-content">{{ rule.content|safe }}</p>
+      <h5><i class="fas fa-greater-than"></i> <strong><a class="article-title" href="{% url 'rule-detail' rule.pk %}">{{ rule.title }}</a></strong> </h5>
+      <p class="article-content">{{ rule.content|safe|truncatechars:250 }}</p>
     </div>
   </article>
   {% endfor %}
