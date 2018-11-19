@@ -25,6 +25,7 @@ from users import views as user_views
 from django.contrib.auth import views as auth_views
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('sp/', include('securitypolicy.urls')),
@@ -39,3 +40,4 @@ urlpatterns = [
     # path('sp/', securitypolicy_views.homepage, name='policy-home')
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

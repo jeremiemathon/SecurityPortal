@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.db.models import Q
+from django.db.models import Count
 
 from rest_framework import generics
 from rest_framework import viewsets
@@ -19,22 +19,24 @@ def homepage(request):
         # 'sections' : Section.objects.all(),
         # 'rules': Rule.objects.all(),
     }
-    return render(request, 'securitypolicy/homepage.html', context)
+    return render(request, 'securitypolicy/policy_list.html', context)
 
 
 class PolicyListView(ListView):
     model = Policy
-    template_name = "securitypolicy/homepage.html"
+    template_name = "securitypolicy/policy_list.html"
     context_object_name = 'policies'
 
 
 class SectionListView(ListView):
-    def get(self, request, pk):
+    def get(self, request, p_id):
         context = {
             'title': 'Security Policy - Policy Detail',
-            'sections': Section.objects.filter(policy_id=pk, )
+            'policy': Policy.objects.get(id=p_id),
+            'sections': Section.objects.filter(policy_id=p_id, ).annotate(total_rules=Count('rule')),
         }
-        return render(request, 'securitypolicy/policy.html', context)
+
+        return render(request, 'securitypolicy/section_list.html', context)
 
 
 class SectionListViewAPI(viewsets.ModelViewSet):
@@ -48,26 +50,28 @@ class RuleListViewAPI(viewsets.ModelViewSet):
 
 
 class SubSectionListView(ListView):
-    def get(self, request, pk, pks):
+    def get(self, request, p_id, s_id):
         context = {
             'title': 'Security Policy - Section Detail',
-            'rules': Rule.objects.filter(section_id=pks, ),
-            'policy': Policy.objects.filter(id=pk, ),
-            'subsections': SubSection.objects.filter(section_id=pks, )
+            'section': Section.objects.get(id=s_id),
+            'policy': Policy.objects.get(id=p_id, ),
+            'rules': Rule.objects.filter(section_id=s_id, ),
+            'subsections': SubSection.objects.filter(section_id=s_id, )
         }
-        return render(request, 'securitypolicy/section_detail.html', context)
+        return render(request, 'securitypolicy/subsection_list.html', context)
 
 
 class RuleListView(ListView):
-    def get(self, request, pk, pks, pkss):
+    def get(self, request, p_id, s_id, ss_id):
         context = {
             'title': 'Security Policy',
-            'policy': Policy.objects.filter(id=pk),
-            'sections': Section.objects.filter(policy_id=pk, id=pks),
-            'subsections': SubSection.objects.filter(section_id=pks),
-            'rules': Rule.objects.filter(subsection_id=pkss)
+            'policy': Policy.objects.get(id=p_id),
+            'section': Section.objects.get(id=s_id),
+            'subsection': SubSection.objects.get(id=ss_id),
+            'rules': Rule.objects.filter(subsection_id=ss_id)
         }
-        return render(request, 'securitypolicy/subsection_detail.html', context)
+        return render(request, 'securitypolicy/rule_list.html', context)
+
 
 class RuleDetailView(DetailView):
     model = Rule

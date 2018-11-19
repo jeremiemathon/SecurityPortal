@@ -42,10 +42,10 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     path('', PolicyListView.as_view(), name='policy-home'),
-    path('policy/<int:pk>', SectionListView.as_view(), name='section-list'),
+    path('policy/<int:p_id>', SectionListView.as_view(), name='section-list'),
     # path('section/', SectionDetailView.as_view(), name='section-detail'),
-    path('policy/<int:pk>/section/<int:pks>', SubSectionListView.as_view(), name='subsection-list'),
-    path('policy/<int:pk>/section/<int:pks>/subsection/<int:pkss>', RuleListView.as_view(), name='subsection-detail'),
+    path('policy/<int:p_id>/section/<int:s_id>', SubSectionListView.as_view(), name='subsection-list'),
+    path('policy/<int:p_id>/section/<int:s_id>/subsection/<int:ss_id>', RuleListView.as_view(), name='subsection-detail'),
     path('results/', RuleSearch.as_view(), name='rule-search'),
 
     path('rule/<int:pk>', RuleDetailView.as_view(), name='rule-detail'),
@@ -57,4 +57,3 @@ urlpatterns = [
 
     path('admin/', securitypolicy_admin_site.urls, name='securitypolicy-admin'),
 ]
-

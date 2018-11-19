@@ -1,0 +1,46 @@
+{% extends 'securitypolicy/base.html' %}
+{% block content %}
+<h1>{{ section.title }} - SubSections</h1>
+{{ section.description|safe }}
+<ul>
+  <article class="media content-section">
+    <div class="media-body">
+      <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+        <tr>
+          <th>
+            <a href="{% url 'policy-home' %}" class="btn btn-primary">{{ policy.title }}</a> >
+            <a href="{% url 'section-list' policy.id %}" class="btn btn-primary">{{ section.title }}</a> > <i class="fas fa-folder"></i> Sub Sections
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for subsection in subsections %}<tr>
+          <td>
+            <div class="row">
+              <div class="col-sm-6">
+                <h4><i class="fas fa-folder"></i> <a class="article-title" href="{% url 'subsection-detail' policy.id section.id subsection.id %}">{{ subsection.title }}</a></h4>
+              </div>
+              <div class="col-sm-6 text-right">
+                <button type="button" class="btn btn-info" data-container="body" data-toggle="popover" data-placement="left" data-trigger="focus" data-html="true" data-content="{{ subsection.description|safe|truncatechars:250 }}">
+                  Details
+                </button>
+              </div>
+          </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  {% for rule in rules %}
+  <article class="media content-section">
+    <div class="media-body">
+      <h5><i class="fas fa-greater-than"></i> <a class="article-title" href="{% url 'rule-detail' rule.pk %}">{{ rule.title }}</a></h5>
+      <p class="article-content">{{ rule.content|safe|truncatechars:250 }}</p>
+    </div>
+  </article>
+  {% endfor %}
+</ul>
+{% endblock content %}
