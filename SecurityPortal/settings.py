@@ -33,11 +33,10 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'adminsortable',
     'ckeditor',
-    'crispy_forms',
     'rest_framework',
     'import_export',
     'django_extensions',
-    'debug_toolbar',
+    'bootstrap4',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -129,9 +128,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
+MEDIA_ROOT = './media/'
+MEDIA_URL = '/media/'
 
+# STATIC_URL = '/static/'
 STATIC_URL = '/static/'
 STATIC_ROOT = './static'
+
+
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TEMPLATE_CONTEXT': True,
 }
+LOGIN_REDIRECT_URL = '/'

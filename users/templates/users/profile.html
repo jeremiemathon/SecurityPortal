@@ -1,6 +1,6 @@
 {% extends "securitypolicy/base.html" %}
-{% load crispy_forms_tags %}
-{% block content %}
+{% load bootstrap4 %}
+{{% block content %}
     <div class="content-section">
       <div class="media">
         <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
@@ -9,6 +9,18 @@
           <p class="text-secondary">{{ user.email }}</p>
         </div>
       </div>
-      <!-- FORM HERE -->
+      <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <fieldset class="form-group">
+              <legend class="border-bottom mb-4">Profile Info</legend>
+              {% bootstrap_form u_form %}
+              {% bootstrap_form p_form %}
+          </fieldset>
+          {% buttons %}
+          <div class="form-group">
+              <button class="btn btn-outline-info" type="submit">Update</button>
+          </div>
+          {% endbuttons %}
+      </form>
     </div>
 {% endblock content %}

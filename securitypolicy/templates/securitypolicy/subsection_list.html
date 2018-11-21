@@ -9,8 +9,8 @@
         <thead class="thead-dark">
         <tr>
           <th>
-            <a href="{% url 'policy-home' %}" class="btn btn-primary">{{ policy.title }}</a> >
-            <a href="{% url 'section-list' policy.id %}" class="btn btn-primary">{{ section.title }}</a> > <i class="fas fa-folder"></i> Sub Sections
+            <a href="{% url 'policy-home' %}" class="btn btn-outline-primary btn-sm">{{ policy.title }}</a> /
+            <a href="{% url 'section-list' policy.id %}" class="btn btn-outline-primary btn-sm">{{ section.title }}</a>
           </th>
         </tr>
         </thead>

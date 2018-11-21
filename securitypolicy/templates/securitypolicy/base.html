@@ -41,8 +41,8 @@
                     {% if user.is_superuser %}
                     <a class="nav-item nav-link" href="{% url 'securitypolicy-admin:index' %}">Administration</a>
                     {% endif %}
-                    <a class="nav-item nav-link" href="{% url 'policy-home' %}">Profile</a>
-                    <a class="nav-item nav-link" href="{% url 'policy-home' %}">Logout</a>
+                    <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                    <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                     {% else %}
                     <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                     <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
