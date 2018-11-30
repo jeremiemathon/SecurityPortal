@@ -12,17 +12,27 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 <ul>
     <article class="media content-section transparent-section">
         <div class="media-body">
-            <table class="table table-striped table-hover">
-                <thead class="bg-primary text-white">
+            <table id="datatable" class="table table-striped table-hover table-sm table-borderless">
+                <thead class="thead-dark">
                 <tr>
-                    <th>Home</th>
+                    <th scope="col">#</th>
+                    <th scope="col">Home</th>
+                    <th scope="col">Sections</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for policy in policies %}
                 <tr>
-                    <td class="col-sm-12 text-center">
-                        <h1 class="h1"><a class="article-title" href="{% url 'section-list' policy.pk %}">{{ policy.title }}</a></h1>
+                    <th scope="row" class="thead-dark align-middle text-center">
+                        {{forloop.counter}}
+                    </th>
+                    <td class="align-middle text-center">
+                        <a class="article-title" href="{% url 'section-list' policy.pk %}">{{ policy.title }}</a>
+                    </td>
+                    <td class="align-middle text-center">
+                        <center>
+                            <span class="badge badge-pill badge-success">{{ policy.total_sections }} section(s)</span>
+                        </center>
                     </td>
 
                 </tr>
@@ -34,3 +44,15 @@ proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 </ul>
 {% endblock content %}
+
+
+{% block footer %}
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+$('#datatable').DataTable();
+$('.dataTables_length').addClass('bs-select');
+});
+</script>
+{% endblock footer %}

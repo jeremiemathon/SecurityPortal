@@ -1,46 +1,72 @@
 {% extends 'securitypolicy/base.html' %}
+
 {% block content %}
+{% if object.author == user or user.is_superuser  %}
+<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'policy-update' policy.id %}">Update</a>
+<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'policy-delete' policy.id %}">Delete</a>
+{% endif %}
+
 <h1>{{ section.title }} - SubSections</h1>
 {{ section.description|safe }}
-<ul>
-  <article class="media content-section">
-    <div class="media-body">
-      <table class="table table-striped table-hover">
+<a href="{% url 'section-list' policy.id %}" class="btn btn-outline-primary btn-sm">Back to {{ section.title }}</a>
+
+
+
+<div class="container-fluid">
+    <table id="datatable" class="table table-striped table-hover table-sm table-borderless">
         <thead class="thead-dark">
         <tr>
-          <th>
-            <a href="{% url 'policy-list' %}" class="btn btn-outline-primary btn-sm">{{ policy.title }}</a> /
-            <a href="{% url 'section-list' policy.id %}" class="btn btn-outline-primary btn-sm">{{ section.title }}</a>
-          </th>
+            <th scope="col">
+                #
+            </th>
+            <th scope="col">
+                Section
+            </th>
+            <th scope="col">
+                Details
+            </th>
+            <th scope="col">
+                Description
+            </th>
         </tr>
         </thead>
         <tbody>
-        {% for subsection in subsections %}<tr>
-          <td>
-            <div class="row">
-              <div class="col-sm-6">
-                <h5><i class="fas fa-folder"></i> <a class="article-title" href="{% url 'subsection-detail' policy.id section.id subsection.id %}">{{ subsection.title }} - </a></h5><span class="badge badge-pill badge-primary">{{ subsection.total_rules }} rule(s)</span>
-              </div>
-              <div class="col-sm-6 text-right">
-                <button type="button" class="btn btn-info" data-container="body" data-toggle="popover" data-placement="left" data-trigger="focus" data-html="true" data-content="{{ subsection.description|safe|truncatechars:250 }}">
-                  Details
-                </button>
-              </div>
-          </td>
+        {% for subsection in subsections %}
+        <tr>
+            <th scope="row" class="thead-dark align-middle text-center">
+                {{forloop.counter}}
+            </th>
+            <td class="align-middle text-center">
+                <a class="article-title" href="{% url 'subsection-detail' policy.id section.id subsection.id %}">{{ subsection.title }} </a>
+            </td>
+            <td class="align-middle text-center">
+                <center>
+                    <span class="badge badge-pill badge-primary">{{ subsection.total_rules }} rule(s)</span></center>
+            </td>
+            <td>
+                <p class="text-justify">
+                    <small>
+                        {{ subsection.description | truncatewords:30 | safe }}
+                    </small>
+
+                </p>
+            </td>
         </tr>
         {% endfor %}
         </tbody>
-      </table>
-    </div>
-  </article>
+    </table>
+</div>
 
-  {% for rule in rules %}
-  <article class="media content-section">
-    <div class="media-body">
-      <h5><i class="fas fa-greater-than"></i> <a class="article-title" href="{% url 'rule-detail' rule.pk %}">{{ rule.title }}</a></h5>
-      <p class="article-content">{{ rule.content|safe|truncatechars:250 }}</p>
-    </div>
-  </article>
-  {% endfor %}
-</ul>
 {% endblock content %}
+
+
+{% block footer %}
+
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+$('#datatable').DataTable();
+$('.dataTables_length').addClass('bs-select');
+});
+</script>
+{% endblock footer %}

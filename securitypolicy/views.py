@@ -30,6 +30,14 @@ class PolicyListView(ListView):
     template_name = "securitypolicy/policy_list.html"
     context_object_name = 'policies'
 
+    def get(self, request):
+        context = {
+            'title': 'Security Policy - Policy Detail',
+            'policies': Policy.objects.all().annotate(total_sections=Count('section')),
+        }
+
+        return render(request, 'securitypolicy/policy_list.html', context)
+
 
 class SectionListView(ListView):
     def get(self, request, p_id):
