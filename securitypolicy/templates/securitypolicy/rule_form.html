@@ -1,0 +1,16 @@
+{% extends "securitypolicy/base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+    <form method="POST" id="ruleForm" data-subsection-url="{% url 'ajax_load_subsections' %}" novalidate>
+        {% csrf_token %}
+        {{ form.media }}
+        {% bootstrap_field form.title layout='horizontal' size='sm' %}
+        {% bootstrap_field form.content layout='horizontal' size='sm' %}
+        {% bootstrap_field form.policy layout='horizontal' size='sm' %}
+        {% bootstrap_field form.section layout='horizontal' size='sm' %}
+        {% bootstrap_field form.subsection layout='horizontal' size='sm' %}
+        {% buttons %}
+        <button class="btn btn-outline-info" type="submit">Post</button>
+        {% endbuttons %}
+    </form>
+{% endblock content %}

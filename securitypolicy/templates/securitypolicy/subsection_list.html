@@ -9,7 +9,7 @@
         <thead class="thead-dark">
         <tr>
           <th>
-            <a href="{% url 'policy-home' %}" class="btn btn-outline-primary btn-sm">{{ policy.title }}</a> /
+            <a href="{% url 'policy-list' %}" class="btn btn-outline-primary btn-sm">{{ policy.title }}</a> /
             <a href="{% url 'section-list' policy.id %}" class="btn btn-outline-primary btn-sm">{{ section.title }}</a>
           </th>
         </tr>
@@ -19,7 +19,7 @@
           <td>
             <div class="row">
               <div class="col-sm-6">
-                <h4><i class="fas fa-folder"></i> <a class="article-title" href="{% url 'subsection-detail' policy.id section.id subsection.id %}">{{ subsection.title }}</a></h4>
+                <h5><i class="fas fa-folder"></i> <a class="article-title" href="{% url 'subsection-detail' policy.id section.id subsection.id %}">{{ subsection.title }} - </a></h5><span class="badge badge-pill badge-primary">{{ subsection.total_rules }} rule(s)</span>
               </div>
               <div class="col-sm-6 text-right">
                 <button type="button" class="btn btn-info" data-container="body" data-toggle="popover" data-placement="left" data-trigger="focus" data-html="true" data-content="{{ subsection.description|safe|truncatechars:250 }}">

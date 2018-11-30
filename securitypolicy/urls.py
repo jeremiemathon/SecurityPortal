@@ -29,6 +29,10 @@ from .views import (
     RuleListViewAPI,
     RuleListView,
     PolicyListView,
+    PolicyCreateView,
+    PolicyUpdateView,
+    PolicyDeleteView,
+    load_subsection
 )
 
 from .admin import securitypolicy_admin_site
@@ -41,18 +45,23 @@ router = routers.DefaultRouter()
 
 
 urlpatterns = [
-    path('', PolicyListView.as_view(), name='policy-home'),
+    path('', PolicyListView.as_view(), name='policy-list'),
     path('policy/<int:p_id>', SectionListView.as_view(), name='section-list'),
-    # path('section/', SectionDetailView.as_view(), name='section-detail'),
     path('policy/<int:p_id>/section/<int:s_id>', SubSectionListView.as_view(), name='subsection-list'),
     path('policy/<int:p_id>/section/<int:s_id>/subsection/<int:ss_id>', RuleListView.as_view(), name='subsection-detail'),
+    path('policy/new', PolicyCreateView.as_view(), name='policy-create'),
+    path('policy/<int:pk>/update/', PolicyUpdateView.as_view(), name='policy-update'),
+    path('policy/<int:pk>/delete/', PolicyDeleteView.as_view(), name='policy-delete'),
+
     path('results/', RuleSearch.as_view(), name='rule-search'),
 
     path('rule/<int:pk>', RuleDetailView.as_view(), name='rule-detail'),
     path('rule/new', RuleCreateView.as_view(), name='rule-create'),
     path('rule/<int:pk>/update/', RuleUpdateView.as_view(), name='rule-update'),
     path('rule/<int:pk>/delete/', RuleDeleteView.as_view(), name='rule-delete'),
+    path('ajax/load-sub_sections/', load_subsection, name='ajax_load_subsections'),
 
+    path(r'select2/', include('django_select2.urls')),
     path('api/', include(router.urls)),
 
     path('admin/', securitypolicy_admin_site.urls, name='securitypolicy-admin'),

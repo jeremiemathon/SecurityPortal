@@ -1,3 +1,4 @@
+from django import forms
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
@@ -5,9 +6,11 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Count
 
-from rest_framework import generics
-from rest_framework import viewsets
+from rest_framework import generics, viewsets
 from .serializers import SectionSerializer, RuleSerializer
+from .forms import RuleForm, PolicyForm
+from ckeditor.widgets import CKEditorWidget
+from ckeditor.fields import RichTextField
 
 from .models import Rule, Section, SubSection, Policy
 
@@ -33,7 +36,7 @@ class SectionListView(ListView):
         context = {
             'title': 'Security Policy - Policy Detail',
             'policy': Policy.objects.get(id=p_id),
-            'sections': Section.objects.filter(policy_id=p_id, ).annotate(total_rules=Count('rule')),
+            'sections': Section.objects.filter(policy_id=p_id, ).annotate(total_subsections=Count('subsection')).annotate(total_rules=Count('rule')),
         }
 
         return render(request, 'securitypolicy/section_list.html', context)
@@ -56,7 +59,7 @@ class SubSectionListView(ListView):
             'section': Section.objects.get(id=s_id),
             'policy': Policy.objects.get(id=p_id, ),
             'rules': Rule.objects.filter(section_id=s_id, ),
-            'subsections': SubSection.objects.filter(section_id=s_id, )
+            'subsections': SubSection.objects.filter(section_id=s_id, ).annotate(total_rules=Count('rule')),
         }
         return render(request, 'securitypolicy/subsection_list.html', context)
 
@@ -79,7 +82,9 @@ class RuleDetailView(DetailView):
 
 class RuleCreateView(LoginRequiredMixin, CreateView):
     model = Rule
-    fields = ['title', 'content', 'section']
+    form_class = RuleForm
+
+    # fields = ['title', 'content', 'section', 'subsection']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -87,9 +92,58 @@ class RuleCreateView(LoginRequiredMixin, CreateView):
 # <app>/<model>_<view_type>.html
 
 
+class PolicyCreateView(LoginRequiredMixin, CreateView):
+    model = Policy
+    form_class = PolicyForm
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+# <app>/<model>_<view_type>.html
+
+
+class PolicyCreateView(LoginRequiredMixin, CreateView):
+    model = Policy
+    form_class = PolicyForm
+
+    # fields = ['title', 'content', 'section', 'subsection']
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+# <app>/<model>_<view_type>.html
+
+class PolicyUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Policy
+
+    fields = ['title', 'description',]
+
+    def form_valid(self, form):
+        return super().form_valid(form)
+# <app>/<model>_<view_type>.html
+
+    def test_func(self):
+        return True
+
+
+class PolicyDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Policy
+    success_url = '/'
+
+    def test_func(self):
+        return True
+
+
+def load_subsection(request):
+    section_id = request.GET.get('section')
+    sub_section = SubSection.objects.filter(section_id=section_id).order_by('order')
+    return render(request, 'securitypolicy/subsection_list_options.html', {'sub_section': sub_section})
+
+
 class RuleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Rule
-    fields = ['title', 'content', 'section']
+
+    fields = ['title', 'content', 'section', 'subsection']
 
     def form_valid(self, form):
         form.instance.author = self.request.user

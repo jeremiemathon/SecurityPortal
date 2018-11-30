@@ -1,45 +1,53 @@
 {% extends 'securitypolicy/base.html' %}
 {% block content %}
+{% if object.author == user or user.is_superuser  %}
+<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'policy-update' policy.id %}">Update</a>
+<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'policy-delete' policy.id %}">Delete</a>
+{% endif %}
+
 <h1>{{ policy.title }} - Sections</h1>
 {{ policy.description|safe }}
-<ul>
-    <!--<a href="{% url 'policy-home'%}">Policies > </a>-->
-    <article class="media content-section">
-        <div class="media-body">
-            <table class="table table-striped table-hover">
-                <thead class="thead-dark">
-                <tr>
-                    <th scope="col">
-                        <a href="{% url 'policy-home' %}" class="btn btn-outline-primary btn-sm">{{ policy.title }}</a>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                {% for section in sections %}
+<a href="{% url 'policy-list' %}" class="btn btn-outline-primary btn-sm">Back to {{ policy.title }}</a><hr />
 
-                <tr>
-                    <td class="p-1">
-                        <div class="row">
-                            <div class="col-sm-8 mt-0 mb-0">
-                                <h5>
-                                    <i class="fas fa-folder"></i>
-                                    <a class="article-title" href="{% url 'subsection-list' section.policy_id section.pk %}">
-                                        {{ section.title }}
-                                    </a>
-                                </h5>
-                            </div>
-                            <div class="col-sm-4 text-right">
-                                #Rules : {{ section.total_rules }}
-                                <button type="button" class="btn btn-outline-primary btn-sm" data-container="body" data-toggle="popover" data-placement="left" data-trigger="focus" data-html="true" data-content="{{ subsection.description|safe|truncatechars:250 }}">
-                                    Details
-                                </button>
-                            </div>
-                    </td>
-                </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </article>
-</ul>
+<div class="container-fluid">
+    <table class="table table-striped table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">
+                #
+            </th>
+            <th scope="col">
+                Section
+            </th>
+            <th scope="col">
+                Description
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for section in sections %}
+        <tr>
+            <th scope="row" class="thead-dark">
+                {{forloop.counter}}
+            </th>
+            <td>
+                <blockquote class="blockquote text-center mb-0">
+                    <p class="mb-0 h3">
+                        <a class="article-title"
+                           href="{% url 'subsection-list' section.policy_id section.pk %}">
+                            {{ section.title }}
+                        </a>
+                    </p>
+                </blockquote>
+                <center><span class="badge badge-pill badge-success">{{ section.total_subsections }} subsection(s)</span>
+                <span class="badge badge-pill badge-primary">{{ section.total_rules }} rule(s)</span></center>
+            </td>
+            <td>
+                {{ section.description | truncatewords:30 | safe }}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% endblock content %}

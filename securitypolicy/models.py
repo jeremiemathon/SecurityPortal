@@ -24,6 +24,9 @@ class Policy(SortableMixin):
 	class Meta:
 		ordering = ['order', ]
 
+	def get_absolute_url(self):
+		return reverse('policy-list')
+
 	pass
 
 

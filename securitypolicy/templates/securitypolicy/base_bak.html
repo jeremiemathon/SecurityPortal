@@ -13,7 +13,6 @@
     <!-- Font Awesome CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Abril+Fatface" rel="stylesheet">
 
     {% if title %}
     <title>{{ title }}</title>
@@ -39,7 +38,6 @@
         <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
                 <a class="nav-item nav-link" href="{% url 'policy-list' %}">Home</a>
-
                 <a class="nav-item nav-link" href="{% url 'policy-list' %}">Security Policy</a>
                 <a class="nav-item nav-link" href="{% url 'policy-list' %}">About</a>
             </div>
@@ -61,12 +59,7 @@
                     </div>
                 </li>
 
-                {% endif %}                <form method="GET" action="{% url 'rule-search' %}">
-                    <div class="text-center">
-                        <input name="q" value="{{ request.get.q }}" placeholder="Search...">
-                        <button class="btn-success btn-sm" type="submit">Search</button>
-                    </div>
-                </form>
+                {% endif %}
                 <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
                 <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                 {% else %}
@@ -74,14 +67,31 @@
                 <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                 {% endif %}
 
-
             </div>
         </div>
     </div>
 </header>
 <main role="main" class="container-fluid">
-    <div class="row">
-        <div class="container-fluid">
+    <div class="row mt-0">
+        <div class="col-md-2">
+            <div class="content-section navbar-dark bg-dark d-block">
+                <h3 class="text-white center">Sidebar Menu</h3>
+                <form method="GET" action="{% url 'rule-search' %}">
+                    <div class="text-center">
+                        <input name="q" value="{{ request.get.q }}" placeholder="Search...">
+                        <br />
+                        <button class="btn-success btn-sm" type="submit">Search</button>
+                    </div>
+                </form>
+                <br>
+                <div class="button-group-vertical">
+                    <button type="button" class="btn btn-secondary btn-block">Home</button>
+                    <button type="button" class="btn btn-secondary btn-block">Latest Posts</button>
+                    <button type="button" class="btn btn-secondary btn-block">Menu</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-10">
             {% if messages %}
             {% for message in messages %}
             <div class="alert alert-{{ message.tags }}">
@@ -91,6 +101,7 @@
             {% endif %}
             {% block content %}{% endblock %}
         </div>
+
     </div>
 </main>
 <!-- Bootstrap JS -->

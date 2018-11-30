@@ -1,0 +1,15 @@
+{% extends "securitypolicy/base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.media }}
+        {% bootstrap_field form.title layout='horizontal' size='sm' %}
+        {% bootstrap_field form.description layout='horizontal' size='sm' %}
+        {% buttons %}
+        <button class="btn btn-outline-info" type="submit">Post</button>
+        {% endbuttons %}
+    </form>
+</div>
+{% endblock content %}

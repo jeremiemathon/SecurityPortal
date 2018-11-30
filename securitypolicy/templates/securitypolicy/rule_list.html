@@ -18,9 +18,9 @@ setTimeout('history.go(-1)', 3000);
         <thead class="thead-dark">
         <tr>
           <th>
-            <a href="{% url 'policy-home' %}" class="btn btn-primary">{{ policy.title }}</a> >
-            <a href="{% url 'section-list' policy.id %}" class="btn btn-primary">{{ section.title }}</a> >
-            <a href="{% url 'subsection-list' policy.id section.id %}" class="btn btn-primary">{{ subsection.title }}</a> > <i class="fas fa-folder"></i> Sections
+            <a href="{% url 'policy-list' %}" class="btn btn-outline-primary btn-sm">{{ policy.title }}</a> /
+            <a href="{% url 'section-list' policy.id %}" class="btn btn-outline-primary btn-sm">{{ section.title }}</a> /
+            <a href="{% url 'subsection-list' policy.id section.id %}" class="btn btn-outline-primary btn-sm">{{ subsection.title }}</a>
           </th>
         </tr>
         </thead>
@@ -33,9 +33,6 @@ setTimeout('history.go(-1)', 3000);
                 <p class="article-content">{{ rule.content|safe|truncatechars:250 }}</p>
               </div>
               <div class="col-sm-6 text-right">
-                <button type="button" class="btn btn-info" data-container="body" data-toggle="popover" data-placement="left" data-trigger="focus" data-html="true" data-content="{{ subsection.description|safe|truncatechars:250 }}">
-                  Details
-                </button>
               </div>
           </td>
         </tr>
