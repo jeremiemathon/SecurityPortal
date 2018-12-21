@@ -1,31 +1,17 @@
 body {
-  background-image: url("/static/securitypolicy/stripes-light.png");
+  background: #fafafa;
   color: #333333;
   margin-top: 5rem;
-  font-family: 'Montserrat', cursive, sans-serif;
 }
 
-.transparent-section {
-    background: none !important;
-}
-.section-row:hover {
-    background: #D3D3D3;
-}
-
-.section-row:hover a{
-    color:#FFF;
-}
-
-.bg-dark {
-    opacity: 0.9 !important;
-}
-
-.thead-dark {
-    opacity: 0.9 !important;
+section {
+    color:red ;
+    //other styles
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: #444444;
+  size: 10px
 }
 
 ul {
@@ -70,7 +56,7 @@ ul {
 }
 
 a.article-title:hover {
-
+  color: #428bca;
   text-decoration: none;
 }
 
@@ -111,5 +97,3 @@ a.article-title:hover {
 .account-heading {
   font-size: 2.5rem;
 }
-
-strong { font-weight: bold; }

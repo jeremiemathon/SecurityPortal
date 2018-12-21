@@ -1,0 +1,18 @@
+{% extends "policy/base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+<form method="POST" id="ruleForm" novalidate>
+    {% csrf_token %}
+    {{ form.media }}
+
+    {% bootstrap_field form.title layout='horizontal' size='sm' %}
+    {% bootstrap_field form.description layout='horizontal' size='sm' %}
+
+    {% bootstrap_field form.parent layout='horizontal'  form_group_class='disabled' size='sm' %}
+    {% bootstrap_field form.reference layout='horizontal' size='sm' %}
+    {% buttons %}
+    <button class="btn btn-outline-info" type="submit">Post</button>
+    {% endbuttons %}
+</form>
+{% endblock content %}

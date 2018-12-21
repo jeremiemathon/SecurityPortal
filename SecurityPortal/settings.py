@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'debug_toolbar',
 
-    'securitypolicy.apps.SecuritypolicyConfig',
+    # 'securitypolicy.apps.SecuritypolicyConfig',
+    'policy.apps.PolicyConfig',
     'users.apps.UsersConfig'
 ]
 
@@ -144,3 +145,22 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 LOGIN_REDIRECT_URL = '/'
 INTERNAL_IPS = ['127.0.0.1']
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Styles','Format'],
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ],
+        'enterMode': 2,
+        # 'coreStyles_bold' : { 'element' : 'b', 'overrides' : 'strong' },
+        # 'coreStyles_bold' : {
+        #   'element' : 'span',
+        #   'attributes' : { 'class' : 'font-weight-bold' }
+        #  },
+    }
+}

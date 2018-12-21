@@ -12,7 +12,8 @@ from .forms import RuleForm, PolicyForm
 from ckeditor.widgets import CKEditorWidget
 from ckeditor.fields import RichTextField
 
-from .models import Rule, Section, SubSection, Policy
+from .models import Rule, Section, SubSection, Policy, Directory
+from django.db.models import Q
 
 
 # @login_required
@@ -24,6 +25,19 @@ def homepage(request):
     }
     return render(request, 'securitypolicy/policy_list.html', context)
 
+class DirectoryListView(ListView):
+    model = Directory
+    template_name = "securitypolicy/list.html"
+    context_object_name = 'directories'
+
+    def get(self, request, dir_id):
+        context = {
+            'title': 'Security Policy - Policy Detail',
+            'directories': Directory.objects.filter(parent_id=dir_id, ).annotate(total_dirs=Count('directory')),
+        }
+
+        return render(request, 'securitypolicy/list.html', context)
+
 
 class PolicyListView(ListView):
     model = Policy
@@ -34,6 +48,7 @@ class PolicyListView(ListView):
         context = {
             'title': 'Security Policy - Policy Detail',
             'policies': Policy.objects.all().annotate(total_sections=Count('section')),
+            'directories': Directory.objects.filter(parent_id=None, ).annotate(total_dirs=Count('directory')),
         }
 
         return render(request, 'securitypolicy/policy_list.html', context)
@@ -88,16 +103,8 @@ class RuleDetailView(DetailView):
     model = Rule
 
 
-class RuleCreateView(LoginRequiredMixin, CreateView):
-    model = Rule
-    form_class = RuleForm
 
-    # fields = ['title', 'content', 'section', 'subsection']
 
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-# <app>/<model>_<view_type>.html
 
 
 class PolicyCreateView(LoginRequiredMixin, CreateView):
@@ -148,10 +155,21 @@ def load_subsection(request):
     return render(request, 'securitypolicy/subsection_list_options.html', {'sub_section': sub_section})
 
 
+class RuleCreateView(LoginRequiredMixin, CreateView):
+    model = Rule
+    form_class = RuleForm
+
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+# <app>/<model>_<view_type>.html
+
+
 class RuleUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Rule
 
-    fields = ['title', 'content', 'section', 'subsection']
+    fields = ['title', 'content', 'policy', 'section', 'subsection', 'reference']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -186,6 +204,6 @@ class RuleSearch(ListView):
         context = {
             'title': 'Security Policy',
             'sections': Section.objects.all(),
-            'rules': Rule.objects.filter(title__contains=request.GET.get("q")),
+            'rules': Rule.objects.filter(Q(title__contains=request.GET.get("q")) | Q(reference__contains=request.GET.get("q"))),
         }
         return render(request, 'securitypolicy/rule_search.html', context)

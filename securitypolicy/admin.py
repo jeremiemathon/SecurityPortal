@@ -6,7 +6,7 @@ from adminsortable.admin import SortableAdmin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
-from .models import Rule, Section, Needs, SubSection, Policy
+from .models import Rule, Section, Needs, SubSection, Policy, Directory
 
 
 class SecurityPolicyAdmin(AdminSite):
@@ -19,6 +19,11 @@ class PolicyAdmin(SortableAdmin):
     class Meta:
         pass
 
+
+class DirectoryAdmin(SortableAdmin):
+    list_display = ('title', 'description', 'order', 'parent')
+    search_fields = ['title']
+    list_editable = ('parent',)
 
 class SectionAdmin(SortableAdmin):
     list_display = ('title', 'description', 'order', 'policy')
@@ -68,4 +73,6 @@ securitypolicy_admin_site.register(Policy, PolicyAdmin)
 securitypolicy_admin_site.register(SubSection, SubSectionAdmin)
 securitypolicy_admin_site.register(Rule, RuleAdmin)
 securitypolicy_admin_site.register(RuleProxyModel, RuleResourceAdmin)
+
+securitypolicy_admin_site.register(Directory, DirectoryAdmin)
 # securitypolicy_admin_site.register(Needs)

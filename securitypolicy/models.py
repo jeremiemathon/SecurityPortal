@@ -10,6 +10,8 @@ from ckeditor.fields import RichTextField
 
 from adminsortable.models import SortableMixin
 from adminsortable.fields import SortableForeignKey
+from django_extensions.db.fields import AutoSlugField
+
 # Create your models here.
 
 
@@ -35,6 +37,8 @@ class Section(SortableMixin):
 	description = RichTextField()
 	order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
 	policy = SortableForeignKey(to=Policy, on_delete=models.CASCADE, null=True)
+
+	# parent = SortableForeignKey('self', null=True, related_name='section', on_delete=models.DO_NOTHING)
 
 	def __str__(self):
 		return self.title
@@ -71,9 +75,14 @@ class Needs(models.Model):
 
 class Rule(SortableMixin):
 	title = models.CharField(max_length=255, default='')
-	subsection = models.ForeignKey(to=SubSection, on_delete=models.CASCADE,  blank=True, null=True)
-	section = models.ForeignKey(to=Section, on_delete=models.CASCADE, blank=True, null=True)
+
+	# policy = models.ForeignKey(to=Policy, on_delete=models.CASCADE, blank=True, null=True)
+	# section = models.ForeignKey(to=Section, on_delete=models.CASCADE, blank=True, null=True)
+	# subsection = models.ForeignKey(to=SubSection, on_delete=models.CASCADE,  blank=True, null=True)
+	parent = SortableForeignKey(to='Directory', on_delete=models.CASCADE)
+
 	content = RichTextField()
+	reference = models.CharField(max_length=255, default='')
 	date_posted = models.DateTimeField(auto_now_add=True)
 	date_modified = models.DateTimeField(auto_now=True)
 	author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -89,3 +98,18 @@ class Rule(SortableMixin):
 	class Meta:
 		ordering = ['order', ]
 
+
+
+
+class Directory(SortableMixin):
+	title = models.CharField(max_length=255, default='Section Title')
+	description = RichTextField()
+	order = models.PositiveIntegerField(default=0, editable=False, db_index=True)
+
+	parent = SortableForeignKey('self', null=True, blank=True, related_name='directory', on_delete=models.DO_NOTHING)
+
+	def __str__(self):
+		return self.title
+
+	class Meta:
+		ordering = ['order', ]

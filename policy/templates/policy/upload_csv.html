@@ -1,0 +1,10 @@
+{% extends "policy/base.html" %}
+{% load bootstrap4 %}
+{% block content %}
+
+<form action="{% url 'policy:upload_csv' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="file" name="csv_file1">
+    <input type="submit" value="Upload">
+</form>
+{% endblock content %}

@@ -1,19 +1,21 @@
 <!-- rule_detail.html -->
 {% extends 'securitypolicy/base.html' %}
 {% block content %}
+
 <ul>
 	<article class="media content-section">
 		<div class="media-body">
-			<div class="article-metadata">
-				<a class="mr-2" href="#">{{ object.author }}</a>
-				<small class="text-muted">{{ object.date_posted|date:"d/m/Y" }}</small>
-				{% if object.author == user or user.is_superuser  %}
-				<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'rule-update' object.id%}">Update</a>
-				<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'rule-delete' object.id%}">Delete</a>
-				{% endif %}
-			</div>
+
+			{% if object.policy_id and object.section_id and object.subsection_id %}
+			<a href="{% url 'subsection-detail' object.policy_id object.section_id object.subsection_id %}" class="btn btn-outline-primary btn-sm">Back to {{ object.subsection }}</a><hr />
+			{% endif %}
 			<h2 class="article-title"><i class="fas fa-greater-than"></i> {{ object.title }}</h2>
-			<p class="article-content">{{ object.content | safe }}</p>
+			<p>{{ object.content | safe }}</p>
+			<hr>
+			{% if object.author == user or user.is_superuser  %}
+			<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'rule-update' object.id%}">Update</a>
+			<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'rule-delete' object.id%}">Delete</a>
+			{% endif %}
 		</div>
 	</article>
 </ul>

@@ -36,7 +36,7 @@ class RuleForm(forms.ModelForm):
     )
     class Meta:
         model = Rule
-        fields = ('title', 'section', 'subsection', 'content',)
+        fields = ('title', 'section', 'policy', 'subsection', 'content', 'reference')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

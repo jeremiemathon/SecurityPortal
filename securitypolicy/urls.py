@@ -32,6 +32,7 @@ from .views import (
     PolicyCreateView,
     PolicyUpdateView,
     PolicyDeleteView,
+    DirectoryListView,
     load_subsection
 )
 
@@ -46,6 +47,7 @@ router = routers.DefaultRouter()
 
 urlpatterns = [
     path('', PolicyListView.as_view(), name='policy-list'),
+    path('dir/<int:dir_id>', DirectoryListView.as_view(), name='directory-list'),
     path('policy/<int:p_id>', SectionListView.as_view(), name='section-list'),
     path('policy/<int:p_id>/section/<int:s_id>', SubSectionListView.as_view(), name='subsection-list'),
     path('policy/<int:p_id>/section/<int:s_id>/subsection/<int:ss_id>', RuleListView.as_view(), name='subsection-detail'),

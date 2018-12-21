@@ -30,7 +30,7 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('sp/', include('securitypolicy.urls')),
+    path('sp/', include('policy.urls')),
 
     path('register/', user_views.register, name='register'),
     path('profile/', user_views.profile, name='profile'),
